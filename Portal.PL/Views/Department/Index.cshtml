@@ -1,0 +1,55 @@
+﻿@model IEnumerable<DepartmentVM>
+
+
+@{
+    ViewData["Title"] = "Department";
+}
+
+<style>
+    tr ,th , tbody , thead{
+        text-align:center !important;
+    }
+</style>
+
+
+<a asp-controller="Department" asp-action="Create" class="btn btn-primary">Create New Department</a>
+
+<table class="table table-hover table-striped text-center table-bordered font-bold">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Code</th>
+            <th>Details</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Code
+                </td>
+                <td>
+                    <a asp-controller="Department" asp-action="Details" asp-route-id="@item.Id" class="btn btn-success">Details</a>
+                </td>
+                <td>
+                    <a asp-controller="Department" asp-action="Update" asp-route-id="@item.Id" class="btn btn-warning">Update</a>
+                </td>
+                <td>
+                    <a asp-controller="Department" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

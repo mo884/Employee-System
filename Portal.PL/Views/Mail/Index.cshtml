@@ -1,0 +1,53 @@
+﻿
+@model MailVM
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+
+    <center>
+        <h3 class="text-danger">@TempData["Msg"]</h3>
+    </center>
+
+
+    <form class="form-group" asp-controller="Mail" asp-action="Index">
+
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <label asp-for="Title">Title</label>
+        <input type="text" asp-for="Title" class="form-control" placeholder="Title" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+        <br />
+
+        <label asp-for="Message">Message</label>
+        <textarea rows="4" class="form-control" asp-for="Message" placeholder="body"></textarea>
+        <span asp-validation-for="Message" class="text-danger"></span>
+        <br />
+
+        <center>
+            <input type="submit" value="Send" class="btn btn-primary" />
+            <input type="reset" value="Cancle" class="btn btn-warning" />
+        </center>
+
+    </form>
+
+
+
+
+
+</body>
+</html>
+
+
+@section JqueryValidation{
+    <script src="~/plugins/jquery-validation/jquery.validate.js"></script>
+    <script src="~/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+}

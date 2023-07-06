@@ -1,0 +1,133 @@
+﻿@inject ICountryRep country
+
+
+@model EmployeeVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section  DataTableStyles{
+        <link href="~/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet">
+}
+
+<div class="block-header">
+   <h2>Create Employee</h2>
+</div>
+
+<form asp-controller="Employee" asp-action="Create" class="form-group" enctype="multipart/form-data">
+
+
+    <div asp-validation-summary="All" class="text-danger font-bold"></div>
+
+
+    @{await Html.RenderPartialAsync("~/Views/Partials/Employee/CreateEdit.cshtml");}
+
+    <br />
+
+    <label asp-for="Image">Image</label>
+    <input asp-for="Image" type="file" class="form-control" />
+    <br />
+
+    <label asp-for="Cv">Cv</label>
+    <input asp-for="Cv" type="file" class="form-control" />
+    <br />
+
+    <br />
+    <select id="CountryList" class="selectpicker">
+        <option>Choose Country</option>
+        @foreach (var item in await country.GetAsync())
+        {
+<option value="@item.Id">@item.Name</option>}
+    </select>
+
+
+    <br /> <br />
+    <select id="CityList" class="selectpicker">
+        <option>Choose City</option>
+    </select>
+
+
+    <br /> <br />
+    <select asp-for="DistrictId" class="selectpicker">
+        <option>Choose District</option>
+    </select>
+
+
+    <center>
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <input type="reset" value="Cancle" class="btn btn-danger" />
+    </center>
+
+</form>
+
+@section JqueryValidation{
+    <script src="~/plugins/jquery-validation/jquery.validate.js"></script>
+    <script src="~/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+    <script>
+
+
+        $(function(){
+        
+
+           $("#CountryList").change(function(){
+
+                 $("#CityList").empty();
+                 $("#CityList").append("<option>Choose City</option>");
+
+                 var countryId = $("#CountryList option:selected").val();
+                 
+                 $.ajax({
+                 
+                     type:"POST",
+                     url:"/Employee/GetCitiesByCountryId",
+                     data:{CntryId :countryId },
+                     success:function(res){
+                     
+                         $.each(res,function(i,e){
+                         
+                             $("#CityList").append("<option value='"+e.Id+"'>"+e.Name+"</option>");
+                         
+                         });
+
+                         $('select').selectpicker('refresh');
+                     }
+                 });
+           });
+
+          
+           $("#CityList").change(function(){
+
+                 $("#DistrictId").empty();
+                 $("#DistrictId").append("<option>Choose District</option>");
+
+                 var cityId = $("#CityList option:selected").val();
+                 
+                 $.ajax({
+                 
+                     type:"POST",
+                     url:"/Employee/GetDistrictsByCityId",
+                     data:{CtyId :cityId },
+                     success:function(res){
+
+                         console.log(res);
+                         $.each(res,function(i,e){
+                         
+                             $("#DistrictId").append("<option value='"+e.Id+"'>"+e.Name+"</option>");
+                         
+                         });
+
+                         $('select').selectpicker('refresh');
+
+                     }
+                 });
+           });
+
+        
+        });
+
+
+    </script>
+}

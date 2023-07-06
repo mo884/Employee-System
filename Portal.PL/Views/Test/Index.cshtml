@@ -1,0 +1,32 @@
+﻿@using Portal.BL.Interface
+
+@inject IEmployeeRep employee
+@inject IDepaertmentRep department
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+@section  DataTableStyles{
+        <link href="~/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet">
+}
+
+<select class="form-control">
+    <option>Choose Department</option>
+    @foreach (var item in await department.GetAsync())
+    {
+        <option value="@item.Id">@item.Name</option>
+    }
+</select>
+
+<br /><br />
+
+<select class="form-control">
+    <option>Choose Employee</option>
+    @foreach (var item in await employee.GetAsync())
+    {
+        <option value="@item.Id">@item.Name</option>
+    }
+</select>
